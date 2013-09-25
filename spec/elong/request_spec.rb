@@ -1,15 +1,33 @@
 require 'spec_helper'
+require 'date'
+require 'rexml/document'
+
 
 describe Elong::Request do
   let(:request) do
-    user      = ""
-    appKey    = ""
-    secretKey = ""
+    user = ''
+    appKey = ''
+    secretKey = ''
 
     Elong::Request.new(user, appKey, secretKey)
   end
 
-  describe "#初始化" do
+  let(:departure_date) { Time.now}
+  let(:sample_api) {'hotel.list'}
+  let(:sample_data) do
+    today = Time.now.to_i
+    tomorrow = today + 24*3600
+    next_week = today + 2*24*3600
+
+    params = {
+      'CityId' => '0101',
+      'ArrivalDate' => DateTime.strptime(tomorrow.to_s, '%s').to_time.strftime('%Y-%m-%d'),
+      'DepartureDate' => DateTime.strptime(next_week.to_s, '%s').to_time.strftime('%Y-%m-%d'),
+      'PageSize' => 1
+    }
+  end
+
+  context "#初始化" do
     it 'user 不能为空' do
       request.user.should_not be_nil
       request.user.should_not be_empty
@@ -44,10 +62,21 @@ describe Elong::Request do
       request.format.should_not be_nil
       request.format.should_not be_empty
     end
+
+    it 'timestamp 默认为空' do
+      request.timestamp.should be_nil
+    end
+
+    it 'signature 默认为空' do
+      request.signature.should be_nil
+    end
+
+    it 'data 默认为空' do
+      request.data.should be_nil
+    end
   end
 
-
-  describe "#验证" do
+  context "#验证数据" do
     it '允许修改 version 的值' do
       request.version = '1.0'
       request.version.should eq('1.0')
@@ -98,12 +127,7 @@ describe Elong::Request do
     end
 
     it '查看 data 数据是否吻合' do
-      data = {
-        'HotelIds' => '42407063',
-        'ArrivalDate' => '2013-09-25',
-        'DepartureDate' => '2013-09-26',
-      }
-      jsonData = request.buildData(data)
+      jsonData = request.buildData(sample_data)
       parsedData = JSON.parse(jsonData)
 
       parsedData.should have_key('Version')
@@ -113,11 +137,51 @@ describe Elong::Request do
       parsedData['Local'].should eq(request.local)
 
       parsedData.should have_key('Request')
-      parsedData.should have(data.size).Request
-      parsedData['Request']['HotelIds'].should eq('42407063')
-      parsedData['Request']['ArrivalDate'].should eq('2013-09-25')
-      parsedData['Request']['DepartureDate'].should eq('2013-09-26')
+      parsedData['Request'].size.should == sample_data.size
+      parsedData['Request']['CityId'].should match(/\d+/i)
+      parsedData['Request']['ArrivalDate'].should match(/\d{4}-\d{2}-\d{2}/i)
+      parsedData['Request']['DepartureDate'].should match(/\d{4}-\d{2}-\d{2}/i)
     end
 
+    it '查看生成的 signature 数据是否正确' do
+      request.generateTimestamp
+      request.buildData(sample_data)
+      request.generateSignature
+
+      request.signature.should_not be_nil
+      request.signature.should_not be_empty
+      request.signature.should have(32).characters
+    end
+  end
+
+  context '#执行方法' do
+    describe '.execute' do
+
+      it "返回 200 状态码" do
+        res = request.execute(sample_api, sample_data)
+        res.code.should eq(200)
+      end
+
+      it "返回 json 数据并解析" do
+        request.format = 'json'
+
+        res = request.execute(sample_api, sample_data)
+        res.code.should eq(200)
+
+        dataset = JSON.parse(res)
+        dataset['Code'].should == "0"
+        dataset['Result']['Count'].should >= 0
+      end
+
+      it "返回 xml 数据并解析" do
+        pending
+
+        #request.format = 'xml'
+        #res = request.execute(sample_api, sample_data)
+        #res.code.should eq(200)
+        #
+        #dataset = REXML::Document.new(res)
+      end
+    end
   end
 end

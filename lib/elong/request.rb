@@ -16,7 +16,7 @@ module Elong
       @domain = opt[:version] ? opt[:version] : 'http://api.elong.com/rest'
       @version = opt[:version] ? opt[:version] : '1.0'
       @local = opt[:local] ? opt[:local] : '0'
-      @format = opt[:format] ? opt[:format] : 'xml'
+      @format = opt[:format] ? opt[:format] : 'json'
     end
 
     def execute(api, data)
@@ -32,19 +32,19 @@ module Elong
 
     def buildQueryParams(api)
       URI.encode_www_form([
-       ["user", @user],
-       ["method", api],
-       ["timestamp", @timestamp],
-       ["format", @format],
-       ["signature", @signature],
-       ["data", self.buildData],
+        ["method", api],
+        ["user", @user],
+        ["timestamp", @timestamp],
+        ["data", @data],
+        ["signature", @signature],
+        ["format", @format],
      ]).to_s
     end
 
-    def buildData(params={})
+    def buildData(params)
       @data = JSON.dump({
         'Version' => @version,
-        'Local' => @local,
+        'Local'   => @local,
         'Request' => params
       })
     end
