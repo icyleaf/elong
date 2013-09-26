@@ -1,18 +1,9 @@
 require 'spec_helper'
-require 'date'
-require 'rexml/document'
 
 
 describe Elong::Request do
-  let(:request) do
-    user = ''
-    appKey = ''
-    secretKey = ''
-
-    Elong::Request.new(user, appKey, secretKey)
-  end
-
-  let(:departure_date) { Time.now}
+  let(:request) { @client.request }
+  let(:departure_date) { Time.now }
   let(:sample_api) {'hotel.list'}
   let(:sample_data) do
     today = Time.now.to_i
