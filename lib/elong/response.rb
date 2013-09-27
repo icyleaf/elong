@@ -3,9 +3,14 @@ require 'multi_xml'
 
 
 module Elong
+  # Elong Http Response Class
   class Response
     attr_reader :status, :body, :headers, :cookies, :code, :error, :dataset
 
+    # Initializes a Request instance
+    #
+    # @param [RestClient::Response]
+    # @return [Elong::Response]
     def initialize(response)
       @status = response.code
       @body = response.to_str
@@ -29,23 +34,39 @@ module Elong
       end
     end
 
+    # Whether or not the content is json content type
+    #
+    # @return [Boolean]
     def json?
       (@headers[:content_type].include?'json') ? true : false
     end
 
+    # Whether or not the content is xml content type
+    #
+    # @return [Boolean]
     def xml?
       (@headers[:content_type].include?'xml') ? true : false
     end
 
+    # Output response content
+    #
+    # @return [String]
     def to_s
       @body
     end
 
+    # Convert response content to JSON format
+    #
+    # @return [Hash]
     def to_json
       MultiJson.load(@body)
     end
 
-    def to_xml
+    # Convert response content to XML format
+    #
+    # @return [Hash]
+    def to_xml(parser=nil)
+      MultiXml.parser = p if parser and [:ox, :libxml, :nokogiri, :rexml].include?parser.to_sym
       MultiXml.parse(@body)
     end
 
