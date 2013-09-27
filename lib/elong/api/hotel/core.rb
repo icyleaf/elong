@@ -4,17 +4,18 @@ module Elong
       # Elong Hotel Core API Class
       class Core < Elong::API::Base
 
-        # the Hotel list
+        # List hotel data for recent 90 days data.
+        # the result will be cacahed about 10 mins
         #
         # @return [Elong::Response]
         def list(params={})
           self.request(__method__, params)
         end
 
-        # the Hotel Details
+        # View hotel details data
         #
         # @return [Elong::Response]
-        def details(params={})
+        def detail(params={})
           self.request(__method__, params)
         end
 
