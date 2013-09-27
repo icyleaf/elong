@@ -15,7 +15,7 @@ module Elong
 
       @domain = opt[:version] ? opt[:version] : 'http://api.elong.com/rest'
       @version = opt[:version] ? opt[:version] : '1.0'
-      @local = opt[:local] ? opt[:local] : '0'
+      @local = opt[:local] ? opt[:local] : 'zh_CN'
       @format = opt[:format] ? opt[:format] : 'json'
     end
 

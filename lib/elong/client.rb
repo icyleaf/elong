@@ -7,15 +7,15 @@ module Elong
     end
 
     def hotel
-      @hotel ||= Elong::API::Hotel.new(self)
+      @hotel ||= Elong::API::Hotel::Core.new(self)
     end
 
     def ghotel
-      @ghotel ||= Elong::API::GHotel.new(self)
+      @ghotel ||= Elong::API::GHotel::Core.new(self)
     end
 
     def common
-      @common ||= Elong::API::Common.new(self)
+      @common ||= Elong::API::Common::Core.new(self)
     end
 
   end

@@ -1,7 +1,12 @@
+require "elong/api/hotel/core"
+require "elong/api/hotel/data"
+require "elong/api/hotel/order"
+require "elong/api/hotel/incr"
+
+
 module Elong
   module API
-    class Hotel < Base
-
+    module Hotel
     end
   end
 end

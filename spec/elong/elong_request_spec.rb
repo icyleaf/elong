@@ -80,14 +80,11 @@ describe Elong::Request do
     end
 
     it '允许修改 local 的值' do
-      subject.local = '0'
-      subject.local.should eq('0')
+      subject.local = 'en_US'
+      subject.local.should eq('en_US')
 
-      subject.local = '1'
-      subject.local.should eq('1')
-
-      subject.local = '2'
-      subject.local.should eq('2')
+      subject.local = 'zh_CN'
+      subject.local.should eq('zh_CN')
     end
 
     it 'format 必须是 xml 或 json' do
