@@ -27,7 +27,7 @@ module Elong
       params = self.buildQueryParams(api)
       url = "#{domain}?#{params}"
 
-      response = RestClient.get(url)
+      response = Elong::Response.new(RestClient.get(url))
     end
 
     def buildQueryParams(api)

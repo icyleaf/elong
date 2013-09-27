@@ -3,12 +3,12 @@ module Elong
     module Hotel
       class Core < Elong::API::Base
 
-        def list(opt={})
-          api = self.buildAPI(__method__)
+        def list(params={})
+          self.request(__method__, params)
         end
 
-        def details(opt={})
-
+        def details(params={})
+          self.request(__method__, params)
         end
 
         def data

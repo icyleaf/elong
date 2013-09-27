@@ -147,18 +147,17 @@ describe Elong::Request do
 
       it '返回 200 状态码' do
         res = subject.execute(sample_api, sample_data)
-        res.code.should eq(200)
+        res.status.should eq(200)
       end
 
       it '返回 json 数据并解析' do
         subject.format = 'json'
 
         res = subject.execute(sample_api, sample_data)
-        res.code.should eq(200)
+        res.status.should eq(200)
 
-        dataset = JSON.parse(res)
-        dataset['Code'].should == '0'
-        dataset['Result']['Count'].should >= 0
+        res.should be_json
+        res.code.should_not be_empty
       end
 
       it '返回 xml 数据并解析' do

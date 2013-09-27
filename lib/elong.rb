@@ -1,6 +1,6 @@
 require "elong/version"
-require "elong/request"
 require "elong/response"
+require "elong/request"
 require "elong/client"
 
 require "elong/api/base"
