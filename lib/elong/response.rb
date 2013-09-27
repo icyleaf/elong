@@ -29,7 +29,7 @@ module Elong
           @dataset = content['ApiResult']['Result']
         end
 
-        @code, @error = @code.split('|') if @code.include?'|'
+        @code, @error = @code.split('|') if @code and @code.include?'|'
         @code = @code
       end
     end
@@ -45,7 +45,7 @@ module Elong
     #
     # @return [Boolean]
     def xml?
-      (@headers[:content_type].include?'xml') ? true : false
+      (['xml', 'html'].any? { |word| @headers[:content_type].include?(word) }) ? true : false
     end
 
     # Output response content

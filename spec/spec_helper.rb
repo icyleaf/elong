@@ -14,6 +14,7 @@ RSpec.configure do |config|
     @tomorrow = DateTime.strptime((@today + 24*3600).to_s, '%s').to_time.strftime('%Y-%m-%d')
     @theDayAfterTomorrow = DateTime.strptime((@today + 2*24*3600).to_s, '%s').to_time.strftime('%Y-%m-%d')
 
+    @hotelId = '50101002'
     @cityId = '0101'
 
     @client = Elong::Client.new(@user, @appKey, @secretKey)

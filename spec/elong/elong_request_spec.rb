@@ -87,22 +87,22 @@ describe Elong::Request do
       subject.local.should eq('zh_CN')
     end
 
-    it 'format 必须是 xml 或 json' do
+    it '允许 format 的值是 xml 或 json' do
       subject.format.should match(/(json|xml)/i)
     end
 
-    it '允许修改 format 的值' do
+    it '可以修改 format 的值' do
       subject.format = 'xml'
       subject.format.should eq('xml')
 
-      subject.format = 'json'
-      subject.format.should eq('json')
-
       subject.format = 'rss'
       subject.format.should eq('rss')
+
+      subject.format = 'json'
+      subject.format.should eq('json')
     end
 
-    it '生成 timestamp 的值随当前系统时间' do
+    it '可以生成 timestamp 的值' do
       timestamp1 = subject.generateTimestamp
       subject.timestamp.should eq(timestamp1)
 
@@ -114,7 +114,7 @@ describe Elong::Request do
       timestamp2.to_i.should > timestamp1.to_i
     end
 
-    it '查看 data 数据是否吻合' do
+    it '必须与 data 数据吻合' do
       jsonData = subject.buildData(sample_data)
       parsedData = JSON.parse(jsonData)
 
@@ -131,7 +131,7 @@ describe Elong::Request do
       parsedData['Request']['DepartureDate'].should match(/\d{4}-\d{2}-\d{2}/i)
     end
 
-    it '查看生成的 signature 数据是否正确' do
+    it '可以正常生成 signature 数据' do
       subject.generateTimestamp
       subject.buildData(sample_data)
       subject.generateSignature
@@ -145,12 +145,12 @@ describe Elong::Request do
   context '#执行方法' do
     describe '.execute' do
 
-      it '返回 200 状态码' do
+      it '应该返回 200 状态码' do
         res = subject.execute(sample_api, sample_data)
         res.status.should eq(200)
       end
 
-      it '返回 json 数据并解析' do
+      it '应该返回 json 数据并正常解析' do
         subject.format = 'json'
 
         res = subject.execute(sample_api, sample_data)
@@ -160,14 +160,13 @@ describe Elong::Request do
         res.code.should_not be_empty
       end
 
-      it '返回 xml 数据并解析' do
-        pending
+      it '应该能够返回 xml 数据并正常解析' do
+        subject.format = 'xml'
+        res = subject.execute(sample_api, sample_data)
+        res.status.should eq(200)
 
-        #subject.format = 'xml'
-        #res = subject.execute(sample_api, sample_data)
-        #res.code.should eq(200)
-        #
-        #dataset = REXML::Document.new(res)
+        res.should be_xml
+        res.code.should_not be_empty
       end
     end
   end
