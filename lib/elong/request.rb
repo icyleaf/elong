@@ -7,7 +7,7 @@ module Elong
   # Elong Http Request Class
   class Request
     attr_reader :user, :appKey, :secretKey
-    attr_accessor :data, :timestamp, :signature, :format, :domain, :version, :local
+    attr_accessor :data, :timestamp, :signature, :format, :domain, :version, :local, :https
 
     # Initializes a Request instance
     #
@@ -24,6 +24,7 @@ module Elong
       @appKey = appKey
       @secretKey = secretKey
 
+      @https = false
       @domain = opts[:version] ? opts[:version] : 'http://api.elong.com/rest'
       @version = opts[:version] ? opts[:version] : '1.0'
       @local = opts[:local] ? opts[:local] : 'zh_CN'
@@ -34,14 +35,18 @@ module Elong
     #
     # @param [String] api call section api(eg, hotel.list, hotel.detail)
     # @param [Hash] data the data request for api
+    # @param [Boolean] https request url if https or http (default: nil)
     # @return [Elong::Response]
-    def execute(api, data)
+    def execute(api, data, https=nil)
       self.generateTimestamp
       self.buildData(data)
       self.generateSignature
 
       params = self.buildQueryParams(api)
-      url = "#{domain}?#{params}"
+      uri = URI.parse(@domain)
+      https = @https if ![TrueClass, FalseClass].include?(https.class)
+      scheme = https ? 'https' : 'http'
+      url = "#{scheme}://#{uri.host}/#{uri.path}?#{params}"
 
       response = Elong::Response.new(RestClient.get(url))
     end

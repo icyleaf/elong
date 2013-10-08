@@ -6,42 +6,42 @@ module Elong
 
         # The Hotel List Order API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def list(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
         # The Hotel Order Detail API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def detail(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
         # The Hotel Order Instant API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def instant(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
         # The Hotel Create Order API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def create(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
         # The Hotel Cancel Order API
@@ -62,22 +62,22 @@ module Elong
 
         # The Hotel Related Orders API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def related(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
         # The Hotel Recent Orders API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def recent(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
       end

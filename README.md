@@ -40,6 +40,10 @@
     response = client.hotel.order.cancel(OrderId:'237864278346',
                                          CancelCode:'对酒店相关条件不满意')
 
+
+ > 无需在意文档中某些接口必须调用 `https` 协议的接口，代码已经帮你处理好了，调用就行了！
+
+
 ### API 返回
 
 #### 查看 HTTP 状态码

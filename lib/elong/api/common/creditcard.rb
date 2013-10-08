@@ -6,12 +6,12 @@ module Elong
 
         # Validate creditcard if or not the CVV must be input
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def validate(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
       end

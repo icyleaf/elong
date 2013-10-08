@@ -60,11 +60,6 @@ describe Elong::API::Hotel do
     it '可以设置返回的房源数量' do
       @client.request.format = 'json'
       pageSize = 1
-      #res = subject.list({'CityId' => @cityId,
-      #                    'ArrivalDate' => @tomorrow,
-      #                    'DepartureDate' => @theDayAfterTomorrow,
-      #                    'PageSize' => pageSize})
-
       res = subject.list(CityId: @cityId,
                           ArrivalDate: @tomorrow,
                           DepartureDate: @theDayAfterTomorrow,
@@ -86,10 +81,20 @@ describe Elong::API::Hotel do
     end
   end
 
-  describe '#data' do
-    describe 'GET data.rp' do
+  describe '#order' do
+    describe 'GET order.list' do
       it '获取正常数据' do
-        pending
+        @client.request.format = 'json'
+        res = subject.order.list(PageIndex: 1)
+
+        res.status.should eq(200)
+        res.code.should eq('0')
+        res.error.should be_nil
+
+        res.should be_json
+
+        #@todo: 貌似是bug，返回总是 20 个
+        res.to_json['Result']['Hotels'].size.should eq(pageSize)
       end
     end
   end

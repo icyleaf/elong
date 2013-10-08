@@ -33,22 +33,22 @@ module Elong
 
         # The Hotel Incr Order API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def order(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
         # The Hotel Incr Feedback API
         #
-        # @todo MUST `https` request
+        # `https` request
         #
         # @params [Hash] params api params
         # @return [Elong::Response]
         def feedback(params={})
-          self.request(__method__, params)
+          self.request(__method__, params, https=true)
         end
 
       end

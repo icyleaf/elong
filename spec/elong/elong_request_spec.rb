@@ -22,7 +22,7 @@ describe Elong::Request do
       subject.user.should eq @user
     end
 
-    it 'should the appKey not be empty' do
+    it 'appKey 不能为空' do
       subject.appKey.should_not be_nil
       subject.appKey.should_not be_empty
       #subject.appKey.should eq @appKey
@@ -102,6 +102,14 @@ describe Elong::Request do
       subject.format.should eq('json')
     end
 
+    it '可以修改 https 的值' do
+      subject.https = true
+      subject.https.should be_true
+
+      subject.https = false
+      subject.https.should be_false
+    end
+
     it '可以生成 timestamp 的值' do
       timestamp1 = subject.generateTimestamp
       subject.timestamp.should eq(timestamp1)
@@ -144,6 +152,29 @@ describe Elong::Request do
 
   context '#执行方法' do
     describe '.execute' do
+
+      it '应该请求的 https 协议接口地址' do
+        subject.https = true
+        res = subject.execute(sample_api, sample_data)
+        subject.https.should be_true
+
+        res = subject.execute(sample_api, sample_data, https=true)
+        subject.https.should be_true
+      end
+
+       it '应该请求的 http 协议接口地址' do
+        subject.https = false
+        res = subject.execute(sample_api, sample_data)
+        subject.https.should be_false
+
+        res = subject.execute(sample_api, sample_data, https=false)
+        subject.https.should be_false
+      end
+
+      it '应该返回 200 状态码' do
+        res = subject.execute(sample_api, sample_data)
+        res.status.should eq(200)
+      end
 
       it '应该返回 200 状态码' do
         res = subject.execute(sample_api, sample_data)
