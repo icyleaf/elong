@@ -1,6 +1,6 @@
 # Elong
 
-艺龙(elong.com) OpenAPI for Ruby
+[艺龙](http://www.elong.com) [OpenAPI](http://open.elong.com/) for Ruby
 
 ## 安装
 
@@ -78,7 +78,7 @@
 ## 测试用例
 
 使用中对代码有疑惑，请浏览源码中 spec 中的代码，里面包含了大量的代码用例。
-填写 `spec/spec_hepler.rb` 中必要的 API 设定可以爬通完整的测试用例。
+填写 `spec/spec_hepler.rb` 中必要的 API 设定可以跑通完整的测试用例。
 
 
 ## 贡献代码
