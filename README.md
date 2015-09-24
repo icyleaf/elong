@@ -1,5 +1,7 @@
 # Elong
 
+> 项目**不再**维护开发。欢迎 PR，我会尽快合并发布新版本。
+
 [艺龙](http://www.elong.com) [OpenAPI](http://open.elong.com/) for Ruby
 
 ## 安装
